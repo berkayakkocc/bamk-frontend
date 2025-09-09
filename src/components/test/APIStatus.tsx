@@ -68,7 +68,7 @@ export function APIStatus() {
             <p className="text-sm text-red-600 mt-1">{error}</p>
           )}
           <p className="text-xs text-gray-500 mt-1">
-            API URL: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}
+            API URL: {process.env.NEXT_PUBLIC_API_URL || 'https://localhost:44318/api'}
           </p>
         </div>
       </div>

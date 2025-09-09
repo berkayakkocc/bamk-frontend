@@ -208,6 +208,11 @@ export const useProductStore = create<ProductStore>((set, get) => ({
   getFilteredProducts: () => {
     const { products, selectedCategory, searchQuery, filters } = get();
     
+    // Guard clause: products undefined ise boş array döndür
+    if (!products || !Array.isArray(products)) {
+      return [];
+    }
+    
     let filtered = products.filter(product => {
       // Category filter
       if (selectedCategory && product.category.id !== selectedCategory) {

@@ -1,15 +1,22 @@
 #!/usr/bin/env node
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5240/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:44318/api';
+
+// Node.js'de self-signed sertifikaları kabul et
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 async function makeRequest(url, options = {}) {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000);
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 saniye timeout
 
   try {
     const response = await fetch(url, {
       ...options,
       signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+      }
     });
     clearTimeout(timeoutId);
     return { response, error: null };
@@ -61,7 +68,8 @@ async function testAPI() {
       const options = {
         method: test.method,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       };
 

@@ -1,11 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable experimental features
-  experimental: {
-    // Enable server components
-    serverComponentsExternalPackages: ['axios'],
-  },
+  // External packages for server components
+  serverExternalPackages: ['axios'],
   
   // Environment variables
   env: {
