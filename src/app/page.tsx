@@ -1,5 +1,6 @@
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui';
+import { APIStatus } from '@/components/test/APIStatus';
 import { useProducts } from '@/hooks';
 import Link from 'next/link';
 import { ShoppingBag, Star, Truck, Shield, RefreshCw } from 'lucide-react';
@@ -31,6 +32,13 @@ export default function Home() {
               </Button>
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* API Status Section */}
+      <section className="py-8 bg-white">
+        <div className="container mx-auto px-4">
+          <APIStatus />
         </div>
       </section>
 

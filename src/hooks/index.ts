@@ -1,6 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 import { useAuthStore, useCartStore, useProductStore, useUIStore } from '@/store';
-import { apiClient } from '@/lib/api-client';
+import { 
+  AuthService, 
+  ProductService, 
+  OrderService, 
+  CartService, 
+  UserService 
+} from '@/lib/api/services';
 import { 
   User, 
   Product, 
@@ -19,7 +26,7 @@ export const useAuth = () => {
   
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginForm) => {
-      const response = await apiClient.post<{ user: User; token: string }>('/auth/login', credentials);
+      const response = await AuthService.login(credentials);
       return response.data;
     },
     onSuccess: (data) => {
@@ -32,7 +39,7 @@ export const useAuth = () => {
 
   const registerMutation = useMutation({
     mutationFn: async (userData: RegisterForm) => {
-      const response = await apiClient.post<{ user: User; token: string }>('/auth/register', userData);
+      const response = await AuthService.register(userData);
       return response.data;
     },
     onSuccess: (data) => {
@@ -45,7 +52,7 @@ export const useAuth = () => {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await apiClient.post('/auth/logout');
+      await AuthService.logout();
     },
     onSuccess: () => {
       logout();
@@ -100,7 +107,7 @@ export const useProducts = (filters?: ProductFilters) => {
         if (filters?.page) params.append('page', filters.page.toString());
         if (filters?.limit) params.append('limit', filters.limit.toString());
 
-        const response = await apiClient.get<PaginatedResponse<Product>>(`/products?${params.toString()}`);
+        const response = await ProductService.getProducts(filters);
         setProducts(response.data.data);
         return response.data;
       } finally {
@@ -114,7 +121,7 @@ export const useProducts = (filters?: ProductFilters) => {
   const categoriesQuery = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
-      const response = await apiClient.get<Category[]>('/categories');
+      const response = await ProductService.getCategories();
       setCategories(response.data);
       return response.data;
     },
@@ -126,7 +133,7 @@ export const useProducts = (filters?: ProductFilters) => {
     return useQuery({
       queryKey: ['product', id],
       queryFn: async () => {
-        const response = await apiClient.get<Product>(`/products/${id}`);
+        const response = await ProductService.getProduct(id);
         return response.data;
       },
       enabled: !!id,
@@ -135,8 +142,8 @@ export const useProducts = (filters?: ProductFilters) => {
 
   // Create product mutation
   const createProductMutation = useMutation({
-    mutationFn: async (productData: Partial<Product>) => {
-      const response = await apiClient.post<Product>('/products', productData);
+    mutationFn: async (productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>) => {
+      const response = await ProductService.createProduct(productData);
       return response.data;
     },
     onSuccess: () => {
@@ -147,7 +154,7 @@ export const useProducts = (filters?: ProductFilters) => {
   // Update product mutation
   const updateProductMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<Product> }) => {
-      const response = await apiClient.put<Product>(`/products/${id}`, data);
+      const response = await ProductService.updateProduct(id, data);
       return response.data;
     },
     onSuccess: () => {
@@ -158,7 +165,7 @@ export const useProducts = (filters?: ProductFilters) => {
   // Delete product mutation
   const deleteProductMutation = useMutation({
     mutationFn: async (id: string) => {
-      await apiClient.delete(`/products/${id}`);
+      await ProductService.deleteProduct(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -236,15 +243,15 @@ export const useOrders = () => {
   const ordersQuery = useQuery({
     queryKey: ['orders'],
     queryFn: async () => {
-      const response = await apiClient.get<Order[]>('/orders');
+      const response = await OrderService.getUserOrders();
       return response.data;
     },
   });
 
   // Create order mutation
   const createOrderMutation = useMutation({
-    mutationFn: async (orderData: Partial<Order>) => {
-      const response = await apiClient.post<Order>('/orders', orderData);
+    mutationFn: async (orderData: any) => {
+      const response = await OrderService.createOrder(orderData);
       return response.data;
     },
     onSuccess: () => {
@@ -254,8 +261,8 @@ export const useOrders = () => {
 
   // Update order status mutation
   const updateOrderStatusMutation = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const response = await apiClient.patch<Order>(`/orders/${id}/status`, { status });
+    mutationFn: async ({ id, statusData }: { id: string; statusData: any }) => {
+      const response = await OrderService.updateOrderStatus(id, statusData);
       return response.data;
     },
     onSuccess: () => {
@@ -354,5 +361,3 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
   return [storedValue, setValue] as const;
 };
 
-// Import React hooks
-import { useState, useEffect } from 'react';
