@@ -39,6 +39,7 @@ export interface Category {
   image?: string;
   parentId?: string;
   isActive: boolean;
+  productCount?: number;
   createdAt: string;
   updatedAt: string;
 }

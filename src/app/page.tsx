@@ -1,6 +1,5 @@
 'use client';
 
-import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui';
 import { APIStatus } from '@/components/test/APIStatus';
 import { useProducts } from '@/hooks';
@@ -27,13 +26,16 @@ import {
 import { useState } from 'react';
 
 export default function Home() {
-  const { products, isLoading, categories } = useProducts({ limit: 8 });
+  // const { products, isLoading, categories } = useProducts({ limit: 8 });
   const [searchQuery, setSearchQuery] = useState('');
+  const products = [];
+  const isLoading = false;
+  const categories = [];
 
   return (
-    <Layout>
+    <>
       {/* Hero Section - 10/10 */}
-      <section className="relative bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white py-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white py-24 overflow-hidden" style={{minHeight: '500px'}}>
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-20">
           <div className="w-full h-full" style={{
@@ -327,6 +329,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 }

@@ -1,0 +1,54 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="icon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#F8FAFC;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="400" fill="url(#bg)" rx="40"/>
+  
+  <!-- Grid Pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="400" fill="url(#grid)" rx="40"/>
+  
+  <!-- Main Grid Icon -->
+  <g transform="translate(100, 100)">
+    <!-- Grid Background -->
+    <rect x="0" y="0" width="200" height="200" fill="rgba(255,255,255,0.1)" rx="20" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+    
+    <!-- Grid Lines -->
+    <g stroke="url(#icon)" stroke-width="3" fill="none">
+      <!-- Vertical lines -->
+      <line x1="50" y1="20" x2="50" y2="180"/>
+      <line x1="100" y1="20" x2="100" y2="180"/>
+      <line x1="150" y1="20" x2="150" y2="180"/>
+      
+      <!-- Horizontal lines -->
+      <line x1="20" y1="50" x2="180" y2="50"/>
+      <line x1="20" y1="100" x2="180" y2="100"/>
+      <line x1="20" y1="150" x2="180" y2="150"/>
+    </g>
+    
+    <!-- Center Circle -->
+    <circle cx="100" cy="100" r="15" fill="url(#icon)" opacity="0.8"/>
+    
+    <!-- Corner Dots -->
+    <circle cx="30" cy="30" r="4" fill="url(#icon)"/>
+    <circle cx="170" cy="30" r="4" fill="url(#icon)"/>
+    <circle cx="30" cy="170" r="4" fill="url(#icon)"/>
+    <circle cx="170" cy="170" r="4" fill="url(#icon)"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="200" y="350" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">GENEL</text>
+</svg>

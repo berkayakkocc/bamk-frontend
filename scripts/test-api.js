@@ -19,7 +19,26 @@ async function makeRequest(url, options = {}) {
       }
     });
     clearTimeout(timeoutId);
-    return { response, error: null };
+    
+    // Response body'yi oku
+    let responseData = {};
+    try {
+      const text = await response.text();
+      if (text) {
+        responseData = JSON.parse(text);
+      }
+    } catch (e) {
+      responseData = { raw: await response.text() };
+    }
+    
+    return { 
+      response: { 
+        status: response.status, 
+        statusText: response.statusText,
+        data: responseData 
+      }, 
+      error: null 
+    };
   } catch (error) {
     clearTimeout(timeoutId);
     return { response: null, error };
@@ -51,10 +70,11 @@ async function testAPI() {
       endpoint: '/auth/login',
       method: 'POST',
       data: {
-        email: 'test@example.com',
-        password: 'testpassword'
+        email: 'test@bamk.com',
+        password: '123456'
       },
       expectError: true, // Bu test başarısız olmalı
+      debug: true // Hata detaylarını göster
     }
   ];
 
@@ -90,8 +110,20 @@ async function testAPI() {
         }
       } else {
         if (test.expectError) {
-          console.log(`❌ ${test.name} - Beklenen hata oluşmadı (${response.status})`);
-          failed++;
+          // 401, 403, 404 gibi hata kodları beklenen hata olarak kabul edilir
+          if (response.status >= 400) {
+            console.log(`✅ ${test.name} - Beklenen hata oluştu (${response.status})`);
+            if (test.debug) {
+              console.log(`   Response: ${JSON.stringify(response, null, 2)}`);
+            }
+            passed++;
+          } else {
+            console.log(`❌ ${test.name} - Beklenen hata oluşmadı (${response.status})`);
+            if (test.debug) {
+              console.log(`   Response: ${JSON.stringify(response, null, 2)}`);
+            }
+            failed++;
+          }
         } else {
           console.log(`✅ ${test.name} - Başarılı (${response.status})`);
           passed++;

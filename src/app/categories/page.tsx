@@ -178,7 +178,15 @@ export default function CategoriesPage() {
                   } bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl hover:shadow-2xl hover:bg-white/20`}
                 >
                   {/* Gradient Background */}
-                  <div className={`absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300 ${
+                  <div className={`absolute inset-0 opacity-20 group-hover:opacity-40 transition-all duration-500 ${
+                    category.name.toLowerCase() === 'siyah' ? 'group-hover:bg-gradient-to-br group-hover:from-gray-800 group-hover:to-gray-900' :
+                    category.name.toLowerCase() === 'beyaz' ? 'group-hover:bg-gradient-to-br group-hover:from-gray-100 group-hover:to-gray-200' :
+                    category.name.toLowerCase() === 'kırmızı' ? 'group-hover:bg-gradient-to-br group-hover:from-red-500 group-hover:to-red-700' :
+                    category.name.toLowerCase() === 'mavi' ? 'group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:to-blue-700' :
+                    category.name.toLowerCase() === 'yeşil' ? 'group-hover:bg-gradient-to-br group-hover:from-green-500 group-hover:to-green-700' :
+                    category.name.toLowerCase() === 'sarı' ? 'group-hover:bg-gradient-to-br group-hover:from-yellow-400 group-hover:to-yellow-600' :
+                    category.name.toLowerCase() === 'mor' ? 'group-hover:bg-gradient-to-br group-hover:from-purple-500 group-hover:to-purple-700' :
+                    category.name.toLowerCase() === 'genel' ? 'group-hover:bg-gradient-to-br group-hover:from-cyan-500 group-hover:to-blue-600' :
                     index % 4 === 0 ? 'bg-gradient-to-br from-indigo-500 to-purple-600' :
                     index % 4 === 1 ? 'bg-gradient-to-br from-purple-500 to-pink-600' :
                     index % 4 === 2 ? 'bg-gradient-to-br from-pink-500 to-rose-600' :
@@ -188,10 +196,21 @@ export default function CategoriesPage() {
                   <div className={`relative z-10 ${viewMode === 'grid' ? 'text-center' : 'flex items-center space-x-6'}`}>
                     {/* Category Icon/Image */}
                     <div className={`${viewMode === 'grid' ? 'mb-6' : 'flex-shrink-0'}`}>
-                      {category.image ? (
+                      {category.image && !category.image.includes('placeholder') ? (
                         <img
                           src={category.image}
                           alt={category.name}
+                          className={`${
+                            viewMode === 'grid' 
+                              ? 'w-24 h-24 mx-auto rounded-3xl object-cover shadow-2xl border-4 border-white/30' 
+                              : 'w-20 h-20 rounded-2xl object-cover shadow-xl border-2 border-white/30'
+                          }`}
+                        />
+                      ) : category.name.toLowerCase().includes('genel') ? (
+                        // Genel kategorisi için özel resim
+                        <img
+                          src="/images/categories/genel-category.svg"
+                          alt="Genel Kategorisi"
                           className={`${
                             viewMode === 'grid' 
                               ? 'w-24 h-24 mx-auto rounded-3xl object-cover shadow-2xl border-4 border-white/30' 
