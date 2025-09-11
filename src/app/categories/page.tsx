@@ -51,13 +51,12 @@ export default function CategoriesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 py-8">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 py-8">
         <div className="container mx-auto px-4 max-w-7xl">
-          <div className="flex items-center justify-center py-20">
-            <div className="text-center">
-              <Loader2 className="h-12 w-12 animate-spin text-purple-400 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-white mb-2">Kategoriler Yükleniyor</h3>
-              <p className="text-purple-200">Lütfen bekleyin...</p>
+          <div className="text-center py-20">
+            <div className="inline-flex items-center space-x-3 bg-white px-8 py-6 rounded-2xl shadow-lg">
+              <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
+              <span className="text-xl font-semibold text-gray-700">Kategoriler yükleniyor...</span>
             </div>
           </div>
         </div>
@@ -67,20 +66,22 @@ export default function CategoriesPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 py-8">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-red-50 py-8">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center py-20">
-            <div className="bg-red-500/20 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Award className="h-12 w-12 text-red-400" />
+            <div className="bg-white p-12 rounded-3xl shadow-xl max-w-md mx-auto">
+              <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Award className="h-10 w-10 text-red-600" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">Hata Oluştu</h1>
+              <p className="text-gray-600 mb-6">Kategoriler yüklenirken bir hata oluştu.</p>
+              <Button 
+                onClick={() => window.location.reload()} 
+                className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full"
+              >
+                Tekrar Dene
+              </Button>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-4">Hata Oluştu</h1>
-            <p className="text-purple-200 text-lg mb-8">Kategoriler yüklenirken bir hata oluştu.</p>
-            <Button 
-              onClick={() => window.location.reload()} 
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full"
-            >
-              Tekrar Dene
-            </Button>
           </div>
         </div>
       </div>
@@ -88,80 +89,78 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
-        {/* Hero Header - 10/10 */}
+        {/* Hero Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
-            Kategoriler
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            Tüm <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Kategoriler</span>
           </h1>
-          <p className="text-xl md:text-2xl text-purple-100 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Tüm ürün kategorilerini keşfedin ve istediğiniz ürünleri kolayca bulun
-            <span className="block text-lg mt-2 text-yellow-300">
+            <span className="block text-lg mt-2 text-purple-600 font-semibold">
               {sortedCategories.length} kategori mevcut
             </span>
           </p>
         </div>
 
-        {/* Search and Filters - 10/10 */}
-        <div className="mb-12">
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* Search Bar */}
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400 h-5 w-5" />
-                <input
-                  type="text"
-                  placeholder="Kategori ara..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-white/20 border border-white/30 rounded-full text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-                />
-              </div>
-              
-              {/* Sort Dropdown */}
-              <div className="relative">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as 'name' | 'products' | 'popular')}
-                  className="appearance-none bg-white/20 border border-white/30 rounded-full px-6 py-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
-                >
-                  <option value="name" className="text-gray-900">İsme Göre</option>
-                  <option value="products" className="text-gray-900">Ürün Sayısına Göre</option>
-                  <option value="popular" className="text-gray-900">Popülerliğe Göre</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-400 h-5 w-5 pointer-events-none" />
-              </div>
+        {/* Search and Filters */}
+        <div className="bg-white rounded-3xl shadow-xl p-8 mb-12 border border-gray-100">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Search Bar */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400 h-6 w-6" />
+              <input
+                type="text"
+                placeholder="Kategori ara..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-16 pr-6 py-4 text-lg border-0 rounded-full shadow-lg focus:ring-4 focus:ring-purple-300 focus:outline-none bg-gray-50"
+              />
+            </div>
+            
+            {/* Sort Dropdown */}
+            <div className="relative">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as 'name' | 'products' | 'popular')}
+                className="appearance-none bg-gray-50 border-0 rounded-full px-6 py-4 pr-10 text-gray-700 focus:outline-none focus:ring-4 focus:ring-purple-300 shadow-lg text-lg"
+              >
+                <option value="name">İsme Göre</option>
+                <option value="products">Ürün Sayısına Göre</option>
+                <option value="popular">Popülerliğe Göre</option>
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 pointer-events-none" />
+            </div>
 
-              {/* View Mode Toggle */}
-              <div className="flex items-center space-x-2 bg-white/20 rounded-full p-1">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-3 rounded-full transition-all duration-200 ${
-                    viewMode === 'grid' 
-                      ? 'bg-purple-600 text-white shadow-lg' 
-                      : 'text-purple-200 hover:bg-white/20'
-                  }`}
-                >
-                  <Grid className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-3 rounded-full transition-all duration-200 ${
-                    viewMode === 'list' 
-                      ? 'bg-purple-600 text-white shadow-lg' 
-                      : 'text-purple-200 hover:bg-white/20'
-                  }`}
-                >
-                  <List className="h-5 w-5" />
-                </button>
-              </div>
+            {/* View Mode Toggle */}
+            <div className="flex items-center space-x-2 bg-gray-50 rounded-2xl p-2 shadow-lg">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-3 rounded-xl transition-all duration-300 ${
+                  viewMode === 'grid' 
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg transform scale-105' 
+                    : 'text-gray-600 hover:bg-white hover:scale-105'
+                }`}
+              >
+                <Grid className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-3 rounded-xl transition-all duration-300 ${
+                  viewMode === 'list' 
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg transform scale-105' 
+                    : 'text-gray-600 hover:bg-white hover:scale-105'
+                }`}
+              >
+                <List className="h-5 w-5" />
+              </button>
             </div>
           </div>
         </div>
 
 
-        {/* Categories Grid/List - 10/10 */}
+        {/* Categories Grid/List */}
         {sortedCategories.length > 0 ? (
           <div className={
             viewMode === 'grid' 
@@ -170,136 +169,87 @@ export default function CategoriesPage() {
           }>
             {sortedCategories.map((category, index) => (
               <Link href={`/products?category=${category.id}`} key={category.id}>
-                <Card 
-                  className={`group relative overflow-hidden ${
-                    viewMode === 'grid' 
-                      ? 'p-8 hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 hover:scale-105' 
-                      : 'p-6 hover:shadow-lg transition-all duration-300 cursor-pointer'
-                  } bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl hover:shadow-2xl hover:bg-white/20`}
-                >
-                  {/* Gradient Background */}
-                  <div className={`absolute inset-0 opacity-20 group-hover:opacity-40 transition-all duration-500 ${
-                    category.name.toLowerCase() === 'siyah' ? 'group-hover:bg-gradient-to-br group-hover:from-gray-800 group-hover:to-gray-900' :
-                    category.name.toLowerCase() === 'beyaz' ? 'group-hover:bg-gradient-to-br group-hover:from-gray-100 group-hover:to-gray-200' :
-                    category.name.toLowerCase() === 'kırmızı' ? 'group-hover:bg-gradient-to-br group-hover:from-red-500 group-hover:to-red-700' :
-                    category.name.toLowerCase() === 'mavi' ? 'group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:to-blue-700' :
-                    category.name.toLowerCase() === 'yeşil' ? 'group-hover:bg-gradient-to-br group-hover:from-green-500 group-hover:to-green-700' :
-                    category.name.toLowerCase() === 'sarı' ? 'group-hover:bg-gradient-to-br group-hover:from-yellow-400 group-hover:to-yellow-600' :
-                    category.name.toLowerCase() === 'mor' ? 'group-hover:bg-gradient-to-br group-hover:from-purple-500 group-hover:to-purple-700' :
-                    category.name.toLowerCase() === 'genel' ? 'group-hover:bg-gradient-to-br group-hover:from-cyan-500 group-hover:to-blue-600' :
-                    index % 4 === 0 ? 'bg-gradient-to-br from-indigo-500 to-purple-600' :
-                    index % 4 === 1 ? 'bg-gradient-to-br from-purple-500 to-pink-600' :
-                    index % 4 === 2 ? 'bg-gradient-to-br from-pink-500 to-rose-600' :
-                    'bg-gradient-to-br from-indigo-400 to-purple-500'
-                  }`} />
-                  
-                  <div className={`relative z-10 ${viewMode === 'grid' ? 'text-center' : 'flex items-center space-x-6'}`}>
-                    {/* Category Icon/Image */}
-                    <div className={`${viewMode === 'grid' ? 'mb-6' : 'flex-shrink-0'}`}>
-                      {category.image && !category.image.includes('placeholder') ? (
-                        <img
-                          src={category.image}
-                          alt={category.name}
-                          className={`${
-                            viewMode === 'grid' 
-                              ? 'w-24 h-24 mx-auto rounded-3xl object-cover shadow-2xl border-4 border-white/30' 
-                              : 'w-20 h-20 rounded-2xl object-cover shadow-xl border-2 border-white/30'
-                          }`}
-                        />
-                      ) : category.name.toLowerCase().includes('genel') ? (
-                        // Genel kategorisi için özel resim
-                        <img
-                          src="/images/categories/genel-category.svg"
-                          alt="Genel Kategorisi"
-                          className={`${
-                            viewMode === 'grid' 
-                              ? 'w-24 h-24 mx-auto rounded-3xl object-cover shadow-2xl border-4 border-white/30' 
-                              : 'w-20 h-20 rounded-2xl object-cover shadow-xl border-2 border-white/30'
-                          }`}
-                        />
-                      ) : (
-                        <div className={`${
-                          viewMode === 'grid' 
-                            ? 'w-24 h-24 mx-auto rounded-3xl flex items-center justify-center text-3xl font-bold text-white shadow-2xl border-4 border-white/30' 
-                            : 'w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-xl border-2 border-white/30'
-                        } ${
-                          index % 4 === 0 ? 'bg-gradient-to-br from-indigo-500 to-purple-600' :
-                          index % 4 === 1 ? 'bg-gradient-to-br from-purple-500 to-pink-600' :
-                          index % 4 === 2 ? 'bg-gradient-to-br from-pink-500 to-rose-600' :
-                          'bg-gradient-to-br from-indigo-400 to-purple-500'
-                        }`}>
-                          {category.name.charAt(0).toUpperCase()}
-                        </div>
-                      )}
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className={`relative bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 ${
+                    viewMode === 'list' ? 'flex items-center' : ''
+                  }`}>
+                    <div className={`relative aspect-square bg-gradient-to-br from-purple-100 via-pink-50 to-indigo-100 flex items-center justify-center overflow-hidden ${
+                      viewMode === 'list' ? 'w-32 h-32 flex-shrink-0' : ''
+                    }`}>
+                      <ShoppingBag className="h-16 w-16 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+                      <div className="absolute top-4 right-4">
+                        <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                          {category.productCount || 0} ürün
+                        </span>
+                      </div>
                     </div>
-                    
-                    <div className={viewMode === 'grid' ? '' : 'flex-1'}>
-                      <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-yellow-300 transition-colors duration-300">
+                    <div className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition-colors duration-300">
                         {category.name}
                       </h3>
                       {category.description && (
-                        <p className="text-purple-100 text-sm mb-6 leading-relaxed">
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
                           {category.description}
                         </p>
                       )}
                       
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-2">
-                          <ShoppingBag className="h-4 w-4 text-purple-300" />
-                          <span className="text-purple-200 text-sm font-medium">
-                            {category.productCount || 0} ürün
-                          </span>
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center space-x-1">
+                          <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                          <span className="text-sm text-gray-500 ml-1 font-medium">(4.8)</span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <Star className="h-4 w-4 text-yellow-400" />
-                          <span className="text-purple-200 text-sm font-medium">
-                            {Math.floor(Math.random() * 2) + 4}.{Math.floor(Math.random() * 9) + 1}
-                          </span>
-                        </div>
+                        <span className={`text-xs px-3 py-1 rounded-full font-semibold ${
+                          category.isActive 
+                            ? 'bg-green-100 text-green-600' 
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {category.isActive ? 'Aktif' : 'Pasif'}
+                        </span>
                       </div>
                       
                       <div className="flex items-center justify-between">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                          category.isActive 
-                            ? 'bg-green-500/20 text-green-300 border border-green-400/30' 
-                            : 'bg-gray-500/20 text-gray-300 border border-gray-400/30'
-                        }`}>
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          {category.isActive ? 'Aktif' : 'Pasif'}
-                        </span>
-                        <div className="flex items-center text-purple-200 group-hover:text-white transition-colors">
-                          <span className="text-sm font-medium mr-1">Keşfet</span>
-                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        <div className="flex items-center space-x-2">
+                          <ShoppingBag className="h-4 w-4 text-purple-400" />
+                          <span className="text-sm text-gray-600 font-medium">
+                            {category.productCount || 0} ürün
+                          </span>
                         </div>
+                        <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                          <ArrowRight className="mr-1 h-4 w-4" />
+                          Keşfet
+                        </Button>
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
               </Link>
             ))}
           </div>
         ) : (
           <div className="text-center py-20">
-            <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-8 border border-white/20">
-              <Grid className="h-16 w-16 text-purple-300" />
+            <div className="bg-white p-12 rounded-3xl shadow-xl max-w-md mx-auto">
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Grid className="h-10 w-10 text-gray-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                {searchQuery ? 'Arama Sonucu Bulunamadı' : 'Kategori Bulunamadı'}
+              </h3>
+              <p className="text-gray-600 mb-6">
+                {searchQuery 
+                  ? `"${searchQuery}" için kategori bulunamadı. Farklı bir arama terimi deneyin.`
+                  : 'Henüz hiç kategori eklenmemiş. Yeni kategoriler eklendiğinde burada görünecek.'
+                }
+              </p>
+              {searchQuery && (
+                <Button 
+                  onClick={() => setSearchQuery('')}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full"
+                >
+                  Aramayı Temizle
+                </Button>
+              )}
             </div>
-            <h3 className="text-3xl font-bold text-white mb-4">
-              {searchQuery ? 'Arama Sonucu Bulunamadı' : 'Kategori Bulunamadı'}
-            </h3>
-            <p className="text-lg text-purple-200 max-w-md mx-auto mb-8">
-              {searchQuery 
-                ? `"${searchQuery}" için kategori bulunamadı. Farklı bir arama terimi deneyin.`
-                : 'Henüz hiç kategori eklenmemiş. Yeni kategoriler eklendiğinde burada görünecek.'
-              }
-            </p>
-            {searchQuery && (
-              <Button 
-                onClick={() => setSearchQuery('')}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full"
-              >
-                Aramayı Temizle
-              </Button>
-            )}
           </div>
         )}
       </div>

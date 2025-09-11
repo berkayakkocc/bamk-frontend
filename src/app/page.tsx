@@ -105,7 +105,7 @@ export default function Home() {
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Müşteri memnuniyetini ön planda tutan, kaliteli hizmet anlayışımızla fark yaratıyoruz
             </p>
-          </div>
+        </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Mutlu Müşteri */}
@@ -250,54 +250,56 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {products.slice(0, 8).map((product, index) => (
-                <div key={product.id} className="group relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
-                  <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100">
-                    <div className="relative aspect-square bg-gradient-to-br from-purple-100 via-pink-50 to-indigo-100 flex items-center justify-center overflow-hidden">
-                      <ShoppingBag className="h-20 w-20 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
-                      <div className="absolute top-4 right-4">
-                        <button className="bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110">
-                          <Heart className="h-5 w-5 text-gray-600 hover:text-red-500" />
-                        </button>
-                      </div>
-                      <div className="absolute top-4 left-4">
-                        <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                          Yeni
-                        </span>
-                      </div>
+                <Link key={product.id} href={`/products/${product.id}`}>
+                  <div className="group relative cursor-pointer">
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                    <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100">
+                      <div className="relative aspect-square bg-gradient-to-br from-purple-100 via-pink-50 to-indigo-100 flex items-center justify-center overflow-hidden">
+                        <ShoppingBag className="h-20 w-20 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute top-4 right-4">
+                          <button className="bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110">
+                        <Heart className="h-5 w-5 text-gray-600 hover:text-red-500" />
+                      </button>
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors duration-300">
-                        {product.name}
-                      </h3>
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
-                        {product.description}
-                      </p>
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center space-x-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                          ))}
-                          <span className="text-sm text-gray-500 ml-1 font-medium">(4.8)</span>
-                        </div>
-                        <span className="text-sm text-green-600 font-semibold bg-green-50 px-3 py-1 rounded-full">Stokta</span>
+                    <div className="absolute top-4 left-4">
+                          <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                        Yeni
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors duration-300">
+                      {product.name}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+                      {product.description}
+                    </p>
+                        <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                        ))}
+                            <span className="text-sm text-gray-500 ml-1 font-medium">(4.8)</span>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <span className="text-2xl font-bold text-purple-600">
-                            ₺{product.price.toLocaleString()}
-                          </span>
-                          <span className="text-sm text-gray-500 line-through ml-2">
-                            ₺{(product.price * 1.2).toLocaleString()}
-                          </span>
+                          <span className="text-sm text-green-600 font-semibold bg-green-50 px-3 py-1 rounded-full">Stokta</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                            <span className="text-2xl font-bold text-purple-600">
+                              ₺{product.price.toLocaleString()}
+                            </span>
+                            <span className="text-sm text-gray-500 line-through ml-2">
+                              ₺{(product.price * 1.2).toLocaleString()}
+                            </span>
+                          </div>
+                          <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            Sepete Ekle
+                          </Button>
                         </div>
-                        <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
-                          Sepete Ekle
-                        </Button>
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

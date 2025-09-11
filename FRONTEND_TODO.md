@@ -207,23 +207,31 @@
 6. ✅ **Kategoriler önizleme bölümünü ekle** - 6 kategori kartı
 7. ✅ **Müşteri yorumları bölümünü ekle** - 6 yorum kartı
 8. ✅ **Newsletter bölümünü ekle** - E-posta aboneliği
+9. ✅ **Ürünler sayfasını geliştir** - Filtreleme, sıralama, ürün kartları
+10. ✅ **Kategoriler sayfasını iyileştir** - Modern tasarım, hover effects
+11. ✅ **Hakkımızda sayfasını oluştur** - Şirket bilgileri, ekip, iletişim
+12. ✅ **İletişim sayfasını oluştur** - İletişim formu, FAQ, sosyal medya
+13. ✅ **Giriş sayfasını oluştur** - E-posta/şifre girişi, sosyal medya, demo hesap
+14. ✅ **Kayıt sayfasını oluştur** - Detaylı kayıt formu, validasyon, avantajlar
+15. ✅ **JSX syntax hatalarını düzelt** - Link component div kapanışları
+16. ✅ **Port 3000 kullanım sorununu çöz** - EADDRINUSE hatası
 
 ### **Yüksek Öncelik (Şimdi)**
-1. **Ürünler sayfasını geliştir** - Filtreleme, sıralama, ürün kartları
-2. **Kategoriler sayfasını iyileştir** - Glassmorphism, hover effects
-3. **Ürün detay sayfasını oluştur** - Tek ürün görünümü
-4. **Error handling ekle** - API hatalarında kullanıcı bilgilendirmesi
+1. ✅ **Ürün detay sayfasını oluştur** - Tek ürün görünümü
+2. **Sepet sayfasını oluştur** - Sepet yönetimi
+3. **Error handling ekle** - API hatalarında kullanıcı bilgilendirmesi
+4. **Loading states ekle** - Skeleton loader, spinner
 
 ### **Orta Öncelik (Bu Hafta)**
-1. **Sepet sayfasını oluştur** - Sepet yönetimi
-2. **Loading states ekle** - Skeleton loader, spinner
-3. **Toast notifications ekle** - Başarı, hata, bilgi mesajları
-4. **Responsive iyileştirmeleri** - Mobil optimizasyonu
+1. **Toast notifications ekle** - Başarı, hata, bilgi mesajları
+2. **Responsive iyileştirmeleri** - Mobil optimizasyonu
+3. **Kullanıcı profilini oluştur** - Hesap yönetimi
+4. **Şifre sıfırlama sayfasını oluştur** - Şifre sıfırlama formu
 
 ### **Düşük Öncelik (Gelecek)**
 1. **Checkout sayfasını oluştur** - Ödeme süreci
-2. **Kullanıcı profilini oluştur** - Hesap yönetimi
-3. **Sipariş takibi sayfası** - Sipariş durumu
+2. **Sipariş takibi sayfası** - Sipariş durumu
+3. **Blog/Haberler sayfası** - İçerik yönetimi
 4. **Performance optimizasyonu** - Image optimization, code splitting
 
 ---
