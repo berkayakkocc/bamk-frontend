@@ -13,6 +13,7 @@ import {
 import { 
   User, 
   Product, 
+  ProductDetail,
   Category, 
   Order, 
   LoginForm, 
@@ -77,18 +78,13 @@ export const useAuth = () => {
 // Product Hooks
 export const useProducts = (filters?: ProductFilters) => {
   const { 
-    products, 
-    categories, 
     selectedCategory, 
     searchQuery, 
     filters: storeFilters,
-    setProducts, 
-    setCategories, 
     setSelectedCategory, 
     setSearchQuery, 
     setFilters,
-    setLoading,
-    getFilteredProducts 
+    setLoading
   } = useProductStore();
 
   const queryClient = useQueryClient();
@@ -99,18 +95,9 @@ export const useProducts = (filters?: ProductFilters) => {
     queryFn: async () => {
       setLoading(true);
       try {
-        const params = new URLSearchParams();
-        if (filters?.category) params.append('category', filters.category);
-        if (filters?.minPrice) params.append('minPrice', filters.minPrice.toString());
-        if (filters?.maxPrice) params.append('maxPrice', filters.maxPrice.toString());
-        if (filters?.search) params.append('search', filters.search);
-        if (filters?.sortBy) params.append('sortBy', filters.sortBy);
-        if (filters?.sortOrder) params.append('sortOrder', filters.sortOrder);
-        if (filters?.page) params.append('page', filters.page.toString());
-        if (filters?.limit) params.append('limit', filters.limit.toString());
-
+        console.log('useProducts - Fetching products with filters:', filters);
         const response = await ProductService.getProducts(filters);
-        setProducts(response.data.data);
+        console.log('useProducts - API Response:', response);
         return response.data;
       } finally {
         setLoading(false);
@@ -124,7 +111,6 @@ export const useProducts = (filters?: ProductFilters) => {
     queryKey: ['categories'],
     queryFn: async () => {
       const response = await ProductService.getCategories();
-      setCategories(response.data);
       return response.data;
     },
     staleTime: 10 * 60 * 1000, // 10 minutes
@@ -136,6 +122,18 @@ export const useProducts = (filters?: ProductFilters) => {
       queryKey: ['product', id],
       queryFn: async () => {
         const response = await ProductService.getProduct(id);
+        return response.data;
+      },
+      enabled: !!id,
+    });
+  };
+
+  // Fetch product detail (with reviews, similar products, etc.)
+  const useProductDetail = (id: string) => {
+    return useQuery({
+      queryKey: ['productDetail', id],
+      queryFn: async () => {
+        const response = await ProductService.getProductDetail(id);
         return response.data;
       },
       enabled: !!id,
@@ -175,8 +173,8 @@ export const useProducts = (filters?: ProductFilters) => {
   });
 
   return {
-    products: getFilteredProducts(),
-    categories,
+    products: productsQuery.data || [],
+    categories: categoriesQuery.data || [],
     selectedCategory,
     searchQuery,
     filters: storeFilters,
@@ -190,6 +188,7 @@ export const useProducts = (filters?: ProductFilters) => {
     updateProduct: updateProductMutation.mutate,
     deleteProduct: deleteProductMutation.mutate,
     useProduct,
+    useProductDetail,
   };
 };
 

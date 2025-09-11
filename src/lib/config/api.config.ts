@@ -1,6 +1,6 @@
 export const API_CONFIG = {
   // Base URL for API requests
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'https://localhost:44318/api',
   
   // Request timeout in milliseconds
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || '10000'),

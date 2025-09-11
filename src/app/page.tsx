@@ -28,6 +28,11 @@ import { useState } from 'react';
 
 export default function Home() {
   const { products, isLoading, categories } = useProducts({ limit: 8 });
+  
+  // Debug için console.log ekleyelim
+  console.log('Home - products:', products);
+  console.log('Home - isLoading:', isLoading);
+  console.log('Home - categories:', categories);
   const [searchQuery, setSearchQuery] = useState('');
 
   return (

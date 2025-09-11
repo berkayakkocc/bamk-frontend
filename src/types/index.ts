@@ -21,14 +21,24 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  originalPrice?: number;
+  original_price?: number;
   images: string[];
   category: Category;
   stock: number;
-  isActive: boolean;
+  is_active: boolean;
   tags: string[];
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
+  // Backend'den gelen ek alanlar
+  brand?: string;
+  rating?: number;
+  review_count?: number;
+  discount_percentage?: number;
+  colors?: ProductColor[];
+  sizes?: string[];
+  features?: string[];
+  specifications?: Record<string, string>;
+  reviews?: ProductReview[];
 }
 
 export interface Category {
@@ -37,11 +47,32 @@ export interface Category {
   slug: string;
   description?: string;
   image?: string;
-  parentId?: string;
-  isActive: boolean;
-  productCount?: number;
-  createdAt: string;
-  updatedAt: string;
+  parent_id?: string;
+  is_active: boolean;
+  product_count?: number;
+  created_at: string;
+  updated_at: string;
+}
+
+// Product Detail Types
+export interface ProductColor {
+  name: string;
+  hex: string;
+}
+
+export interface ProductReview {
+  id: string;
+  user: string;
+  rating: number;
+  comment: string;
+  is_verified: boolean;
+  date: string;
+  city: string;
+}
+
+export interface ProductDetail extends Product {
+  // Ürün detay sayfası için ek alanlar
+  similar_products?: Product[];
 }
 
 // Cart Types

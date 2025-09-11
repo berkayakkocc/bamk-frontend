@@ -218,9 +218,10 @@
 
 ### **Yüksek Öncelik (Şimdi)**
 1. ✅ **Ürün detay sayfasını oluştur** - Tek ürün görünümü
-2. **Sepet sayfasını oluştur** - Sepet yönetimi
-3. **Error handling ekle** - API hatalarında kullanıcı bilgilendirmesi
-4. **Loading states ekle** - Skeleton loader, spinner
+2. ✅ **Backend entegrasyonu tamamla** - Type'lar, API service'ler, hooks
+3. **Sepet sayfasını oluştur** - Sepet yönetimi
+4. **Error handling ekle** - API hatalarında kullanıcı bilgilendirmesi
+5. **Loading states ekle** - Skeleton loader, spinner
 
 ### **Orta Öncelik (Bu Hafta)**
 1. **Toast notifications ekle** - Başarı, hata, bilgi mesajları

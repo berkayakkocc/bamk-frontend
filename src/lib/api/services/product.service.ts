@@ -1,9 +1,11 @@
 import { apiClient } from '../../api-client';
-import { Product, Category, ProductFilters, PaginatedResponse, ApiResponse } from '@/types';
+import { Product, ProductDetail, Category, ProductFilters, PaginatedResponse, ApiResponse } from '@/types';
 
 export class ProductService {
   // Get all products with filters
   static async getProducts(filters?: ProductFilters): Promise<ApiResponse<PaginatedResponse<Product>>> {
+    console.log('ProductService.getProducts - Fetching from API with filters:', filters);
+    
     const params = new URLSearchParams();
     
     if (filters) {
@@ -25,24 +27,35 @@ export class ProductService {
     return apiClient.get<Product>(`/products/${id}`);
   }
 
+  // Get product detail by ID (with reviews, similar products, etc.)
+  static async getProductDetail(id: string): Promise<ApiResponse<ProductDetail>> {
+    return apiClient.get<ProductDetail>(`/products/${id}/detail`);
+  }
+
+  // Get product reviews
+  static async getProductReviews(id: string): Promise<ApiResponse<any[]>> {
+    return apiClient.get<any[]>(`/products/${id}/reviews`);
+  }
+
+  // Get similar products
+  static async getSimilarProducts(id: string, limit?: number): Promise<ApiResponse<Product[]>> {
+    const params = new URLSearchParams();
+    if (limit) {
+      params.append('limit', limit.toString());
+    }
+    
+    const queryString = params.toString();
+    const url = queryString ? `/products/${id}/similar?${queryString}` : `/products/${id}/similar`;
+    
+    return apiClient.get<Product[]>(url);
+  }
+
   // Get products by category
   static async getProductsByCategory(
     categoryId: string, 
     filters?: Omit<ProductFilters, 'category'>
   ): Promise<ApiResponse<PaginatedResponse<Product>>> {
-    const params = new URLSearchParams();
-    params.append('category', categoryId);
-    
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          params.append(key, value.toString());
-        }
-      });
-    }
-
-    const queryString = params.toString();
-    return apiClient.get<PaginatedResponse<Product>>(`/products?${queryString}`);
+    return this.getProducts({ ...filters, category: categoryId });
   }
 
   // Search products
@@ -50,19 +63,7 @@ export class ProductService {
     query: string, 
     filters?: Omit<ProductFilters, 'search'>
   ): Promise<ApiResponse<PaginatedResponse<Product>>> {
-    const params = new URLSearchParams();
-    params.append('search', query);
-    
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          params.append(key, value.toString());
-        }
-      });
-    }
-
-    const queryString = params.toString();
-    return apiClient.get<PaginatedResponse<Product>>(`/products?${queryString}`);
+    return this.getProducts({ ...filters, search: query });
   }
 
   // Get featured products
@@ -80,15 +81,7 @@ export class ProductService {
 
   // Get related products
   static async getRelatedProducts(productId: string, limit?: number): Promise<ApiResponse<Product[]>> {
-    const params = new URLSearchParams();
-    if (limit) {
-      params.append('limit', limit.toString());
-    }
-    
-    const queryString = params.toString();
-    const url = queryString ? `/products/${productId}/related?${queryString}` : `/products/${productId}/related`;
-    
-    return apiClient.get<Product[]>(url);
+    return this.getSimilarProducts(productId, limit);
   }
 
   // Get all categories

@@ -39,11 +39,12 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useProducts } from '@/hooks';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { products } = useProducts();
+  const { useProductDetail } = useProducts();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
@@ -51,8 +52,11 @@ export default function ProductDetailPage() {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
 
-  // Mock product data - gerçek uygulamada API'den gelecek
-  const product = {
+  // API'den ürün detayını al
+  const { data: product, isLoading, error } = useProductDetail(params.id as string);
+
+  // Mock data - API'den veri gelene kadar
+  const mockProduct = {
     id: params.id,
     name: "Premium Wireless Bluetooth Kulaklık",
     brand: "SoundMax",
@@ -130,14 +134,17 @@ export default function ProductDetailPage() {
     ]
   };
 
+  // API'den veri gelmediyse mock data kullan
+  const currentProduct = product || mockProduct;
+
   const handleAddToCart = () => {
     // Sepete ekleme logic'i burada olacak
-    console.log('Sepete eklendi:', { product, quantity, selectedSize, selectedColor });
+    console.log('Sepete eklendi:', { product: currentProduct, quantity, selectedSize, selectedColor });
   };
 
   const handleBuyNow = () => {
     // Hemen satın alma logic'i burada olacak
-    console.log('Hemen satın al:', { product, quantity, selectedSize, selectedColor });
+    console.log('Hemen satın al:', { product: currentProduct, quantity, selectedSize, selectedColor });
   };
 
   const handleWishlist = () => {
@@ -147,8 +154,8 @@ export default function ProductDetailPage() {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: product.name,
-        text: product.description,
+        title: currentProduct.name,
+        text: currentProduct.description,
         url: window.location.href
       });
     } else {
@@ -156,7 +163,8 @@ export default function ProductDetailPage() {
     }
   };
 
-  if (!product) {
+  // Loading state
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
@@ -165,6 +173,32 @@ export default function ProductDetailPage() {
         </div>
       </div>
     );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-red-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <X className="h-10 w-10 text-red-600" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Ürün Bulunamadı</h1>
+          <p className="text-gray-600 mb-6">Aradığınız ürün bulunamadı veya kaldırılmış olabilir.</p>
+          <Button 
+            onClick={() => router.push('/products')}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full"
+          >
+            Ürünlere Dön
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Product not found
+  if (!currentProduct) {
+    notFound();
   }
 
   return (
@@ -177,9 +211,9 @@ export default function ProductDetailPage() {
             <ArrowRight className="h-4 w-4" />
             <Link href="/products" className="hover:text-purple-600 transition-colors">Ürünler</Link>
             <ArrowRight className="h-4 w-4" />
-            <Link href={`/products?category=${product.category}`} className="hover:text-purple-600 transition-colors">{product.category}</Link>
+            <Link href={`/products?category=${currentProduct.category}`} className="hover:text-purple-600 transition-colors">{currentProduct.category}</Link>
             <ArrowRight className="h-4 w-4" />
-            <span className="text-gray-900 font-medium">{product.name}</span>
+            <span className="text-gray-900 font-medium">{currentProduct.name}</span>
           </div>
         </div>
       </div>
@@ -194,8 +228,8 @@ export default function ProductDetailPage() {
               <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                 <div className="aspect-square relative">
                   <img
-                    src={product.images[selectedImage]}
-                    alt={product.name}
+                    src={currentProduct.images[selectedImage]}
+                    alt={currentProduct.name}
                     className="w-full h-full object-cover cursor-pointer transition-transform duration-300 hover:scale-105"
                     onClick={() => setShowImageModal(true)}
                   />

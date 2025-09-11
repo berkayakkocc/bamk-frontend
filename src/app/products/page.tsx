@@ -2,6 +2,7 @@
 
 import { useProducts } from '@/hooks';
 import { Card, Button } from '@/components/ui';
+import Link from 'next/link';
 import { 
   Loader2, 
   Search, 
@@ -163,7 +164,7 @@ export default function ProductsPage() {
           <div className="flex items-center space-x-4">
             <div className="bg-white px-6 py-3 rounded-2xl shadow-lg">
               <span className="text-lg font-semibold text-gray-700">
-                {products?.length || 0} ürün bulundu
+                {products.length} ürün bulundu
               </span>
             </div>
             <Button
@@ -178,7 +179,7 @@ export default function ProductsPage() {
         </div>
 
         {/* Products Grid/List */}
-        {products && products.length > 0 ? (
+        {products.length > 0 ? (
           <div className={
             viewMode === 'grid' 
               ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'
@@ -194,7 +195,45 @@ export default function ProductsPage() {
                     <div className={`relative aspect-square bg-gradient-to-br from-purple-100 via-pink-50 to-indigo-100 flex items-center justify-center overflow-hidden ${
                       viewMode === 'list' ? 'w-32 h-32 flex-shrink-0' : ''
                     }`}>
-                      <ShoppingBag className="h-16 w-16 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+                      {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') ? (
+                        <img
+                          src={product.images[0]}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
+                          {/* T-Shirt Silueti */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className={`w-24 h-24 rounded-t-full ${
+                              product.category?.name === 'Kırmızı' ? 'bg-red-500' :
+                              product.category?.name === 'Siyah' ? 'bg-gray-800' :
+                              product.category?.name === 'Beyaz' ? 'bg-white border-2 border-gray-300' :
+                              product.category?.name === 'Mavi' ? 'bg-blue-500' :
+                              product.category?.name === 'Yeşil' ? 'bg-green-500' :
+                              'bg-purple-500'
+                            }`} style={{
+                              clipPath: 'polygon(20% 0%, 80% 0%, 90% 20%, 90% 80%, 80% 100%, 20% 100%, 10% 80%, 10% 20%)'
+                            }}>
+                              <div className="w-full h-full flex items-center justify-center text-white font-bold text-lg">
+                                {product.name.includes('Classic') ? 'C' : 
+                                 product.name.includes('Premium') ? 'P' : 
+                                 product.name.includes('Sport') ? 'S' : 
+                                 product.name.charAt(0)}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Kategori Etiketi */}
+                          <div className="absolute bottom-2 left-2 right-2">
+                            <div className="bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 text-center">
+                              <div className="text-xs font-bold text-gray-800">
+                                {product.category?.name || 'T-Shirt'}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       <div className="absolute top-4 right-4">
                         <button className="bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110">
                           <Heart className="h-5 w-5 text-gray-600 hover:text-red-500" />
