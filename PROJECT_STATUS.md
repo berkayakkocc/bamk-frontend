@@ -4,7 +4,7 @@
 - **Proje Adı:** BAMK E-ticaret Frontend
 - **Teknoloji:** Next.js 15.5.2 + React 19.1.0 + TypeScript + Tailwind CSS
 - **Durum:** 🟢 **MVP Ana Sayfa + Sayfalar Tamamlandı**
-- **Son Güncelleme:** 2024-12-19
+- **Son Güncelleme:** 2025-01-12
 
 ---
 
@@ -280,6 +280,6 @@
 
 ---
 
-**Son Güncelleme:** 2024-12-19 15:30
+**Son Güncelleme:** 2025-01-12 20:30
 **Güncelleyen:** AI Assistant
-**Versiyon:** 1.0.0-MVP
+**Versiyon:** 1.1.0-MVP

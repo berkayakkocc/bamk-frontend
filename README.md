@@ -2,6 +2,12 @@
 
 Modern e-ticaret platformu için Next.js tabanlı frontend uygulaması.
 
+## 📊 **Proje Durumu**
+- **Durum:** 🟢 **MVP Tamamlandı** (85% tamamlandı)
+- **Başlangıç:** 9 Eylül 2025
+- **Son Güncelleme:** 12 Ocak 2025
+- **Versiyon:** 1.1.0-MVP
+
 ## 🚀 Özellikler
 
 - **Next.js 15** - Modern React framework
@@ -80,10 +86,39 @@ chore: build, config değişiklikleri
 ## 🌐 Environment Variables
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_API_URL=https://localhost:44318/api
 NEXTAUTH_SECRET=your-secret-key
 NEXTAUTH_URL=http://localhost:3000
 ```
+
+## ✅ **Tamamlanan Özellikler**
+
+### **Ana Sayfa MVP**
+- ✅ Hero section (gradient arka plan, arama çubuğu)
+- ✅ İstatistik bölümü (4 adet istatistik kartı)
+- ✅ Özellikler bölümü (4 adet özellik kartı)
+- ✅ Öne çıkan ürünler (8 ürün kartı)
+- ✅ Kategoriler önizleme (6 kategori kartı)
+- ✅ Müşteri yorumları (6 yorum kartı)
+- ✅ Newsletter bölümü
+
+### **Sayfalar**
+- ✅ Hakkımızda sayfası
+- ✅ İletişim sayfası
+- ✅ Giriş sayfası
+- ✅ Kayıt sayfası
+- ✅ Ürünler sayfası (filtreleme, sıralama)
+- ✅ Kategoriler sayfası
+- ✅ Ürün detay sayfası
+- ✅ Sepet sayfası
+
+### **Teknik Özellikler**
+- ✅ Backend API entegrasyonu
+- ✅ Sepet sistemi (frontend-only)
+- ✅ Responsive tasarım
+- ✅ Modern UI/UX (gradient, animasyonlar)
+- ✅ TypeScript tip güvenliği
+- ✅ Error handling
 
 ## 📄 Lisans
 
