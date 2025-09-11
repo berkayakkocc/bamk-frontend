@@ -158,15 +158,13 @@ export default function ContactPage() {
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{method.title}</h3>
                   <p className="text-purple-600 font-semibold mb-3">{method.info}</p>
                   <p className="text-gray-600 text-sm mb-6 leading-relaxed">{method.description}</p>
-                  <Button 
-                    asChild
-                    className={`w-full bg-gradient-to-r ${method.color} hover:opacity-90 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105`}
+                  <a 
+                    href={method.action}
+                    className={`w-full bg-gradient-to-r ${method.color} hover:opacity-90 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center`}
                   >
-                    <a href={method.action}>
-                      İletişime Geç
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
+                    İletişime Geç
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
                 </div>
               </div>
             ))}

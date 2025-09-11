@@ -30,7 +30,7 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginForm) => {
       const response = await AuthService.login(credentials);
-      return response.data;
+      return response;
     },
     onSuccess: (data) => {
       login(data.user, data.token);
@@ -43,7 +43,7 @@ export const useAuth = () => {
   const registerMutation = useMutation({
     mutationFn: async (userData: RegisterForm) => {
       const response = await AuthService.register(userData);
-      return response.data;
+      return response;
     },
     onSuccess: (data) => {
       login(data.user, data.token);
@@ -95,10 +95,11 @@ export const useProducts = (filters?: ProductFilters) => {
     queryFn: async () => {
       setLoading(true);
       try {
-        console.log('useProducts - Fetching products with filters:', filters);
         const response = await ProductService.getProducts(filters);
-        console.log('useProducts - API Response:', response);
-        return response.data;
+        return response;
+      } catch (error) {
+        console.error('Products error:', error);
+        throw error;
       } finally {
         setLoading(false);
       }
@@ -111,7 +112,7 @@ export const useProducts = (filters?: ProductFilters) => {
     queryKey: ['categories'],
     queryFn: async () => {
       const response = await ProductService.getCategories();
-      return response.data;
+      return response;
     },
     staleTime: 10 * 60 * 1000, // 10 minutes
   });
@@ -122,7 +123,7 @@ export const useProducts = (filters?: ProductFilters) => {
       queryKey: ['product', id],
       queryFn: async () => {
         const response = await ProductService.getProduct(id);
-        return response.data;
+        return response;
       },
       enabled: !!id,
     });
@@ -134,7 +135,7 @@ export const useProducts = (filters?: ProductFilters) => {
       queryKey: ['productDetail', id],
       queryFn: async () => {
         const response = await ProductService.getProductDetail(id);
-        return response.data;
+        return response;
       },
       enabled: !!id,
     });
@@ -144,7 +145,7 @@ export const useProducts = (filters?: ProductFilters) => {
   const createProductMutation = useMutation({
     mutationFn: async (productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>) => {
       const response = await ProductService.createProduct(productData);
-      return response.data;
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -155,7 +156,7 @@ export const useProducts = (filters?: ProductFilters) => {
   const updateProductMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<Product> }) => {
       const response = await ProductService.updateProduct(id, data);
-      return response.data;
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -172,9 +173,12 @@ export const useProducts = (filters?: ProductFilters) => {
     },
   });
 
+  const products = productsQuery.data?.data || [];
+  const categories = categoriesQuery.data?.data || [];
+
   return {
-    products: productsQuery.data || [],
-    categories: categoriesQuery.data || [],
+    products,
+    categories,
     selectedCategory,
     searchQuery,
     filters: storeFilters,
@@ -245,7 +249,7 @@ export const useOrders = () => {
     queryKey: ['orders'],
     queryFn: async () => {
       const response = await OrderService.getUserOrders();
-      return response.data;
+      return response;
     },
   });
 
@@ -253,7 +257,7 @@ export const useOrders = () => {
   const createOrderMutation = useMutation({
     mutationFn: async (orderData: any) => {
       const response = await OrderService.createOrder(orderData);
-      return response.data;
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
@@ -264,7 +268,7 @@ export const useOrders = () => {
   const updateOrderStatusMutation = useMutation({
     mutationFn: async ({ id, statusData }: { id: string; statusData: any }) => {
       const response = await OrderService.updateOrderStatus(id, statusData);
-      return response.data;
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });

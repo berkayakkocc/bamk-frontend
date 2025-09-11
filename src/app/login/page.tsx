@@ -25,9 +25,11 @@ import {
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks';
+import { useAuthStore } from '@/store';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login: loginMutation } = useAuth();
+  const { login } = useAuthStore();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -58,12 +60,16 @@ export default function LoginPage() {
       
       // Mock login logic
       if (formData.email === 'demo@bamk.com' && formData.password === 'demo123') {
-        await login({
+        const user = {
           id: '1',
           name: 'Demo Kullanıcı',
           email: 'demo@bamk.com',
-          avatar: null
-        });
+          role: 'customer' as const,
+          avatar: undefined,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        await login(user, 'mock-token');
         // Redirect to home page
         window.location.href = '/';
       } else {

@@ -21,19 +21,19 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  original_price?: number;
+  originalPrice?: number;
   images: string[];
   category: Category;
   stock: number;
-  is_active: boolean;
+  isActive: boolean;
   tags: string[];
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
   // Backend'den gelen ek alanlar
   brand?: string;
   rating?: number;
-  review_count?: number;
-  discount_percentage?: number;
+  reviewCount?: number;
+  discountPercentage?: number;
   colors?: ProductColor[];
   sizes?: string[];
   features?: string[];
@@ -47,11 +47,11 @@ export interface Category {
   slug: string;
   description?: string;
   image?: string;
-  parent_id?: string;
-  is_active: boolean;
-  product_count?: number;
-  created_at: string;
-  updated_at: string;
+  parentId?: string;
+  isActive: boolean;
+  productCount?: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Product Detail Types

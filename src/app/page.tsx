@@ -81,14 +81,14 @@ export default function Home() {
 
             {/* CTA Butonları */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link href="/products">
+              <Link href="/products" prefetch={true}>
                 <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-10 py-5 text-xl font-bold rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105">
                   <ShoppingBag className="mr-3 h-7 w-7" />
                   Alışverişe Başla
                   <ArrowRight className="ml-3 h-6 w-6" />
                 </Button>
               </Link>
-              <Link href="/categories">
+              <Link href="/categories" prefetch={true}>
                 <Button size="lg" variant="outline" className="border-3 border-white text-white hover:bg-white hover:text-purple-600 px-10 py-5 text-xl font-bold rounded-full transition-all duration-300 transform hover:scale-105">
                   <Grid3X3 className="mr-3 h-6 w-6" />
                   Kategorileri Keşfet
@@ -254,8 +254,8 @@ export default function Home() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {products.slice(0, 8).map((product, index) => (
-                <Link key={product.id} href={`/products/${product.id}`}>
+              {Array.isArray(products) ? products.slice(0, 8).map((product: any, index: number) => (
+                <Link key={product.id} href={`/products/${product.id}`} prefetch={true}>
                   <div className="group relative cursor-pointer">
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                     <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100">
@@ -303,14 +303,14 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                </div>
+              </Link>
+            )) : null}
             </div>
           )}
 
           <div className="text-center mt-20">
-            <Link href="/products">
+            <Link href="/products" prefetch={true}>
               <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-5 text-xl font-bold rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105">
                 <ShoppingBag className="mr-3 h-6 w-6" />
                 Tüm Ürünleri Gör
@@ -335,7 +335,7 @@ export default function Home() {
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {/* Elektronik */}
-            <Link href="/categories/elektronik" className="group">
+            <Link href="/categories/elektronik" prefetch={true} className="group">
               <div className="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 text-center">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 <div className="relative z-10">
@@ -350,7 +350,7 @@ export default function Home() {
             </Link>
 
             {/* Giyim */}
-            <Link href="/categories/giyim" className="group">
+            <Link href="/categories/giyim" prefetch={true} className="group">
               <div className="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 text-center">
                 <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-rose-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 <div className="relative z-10">
@@ -365,7 +365,7 @@ export default function Home() {
             </Link>
 
             {/* Ev & Yaşam */}
-            <Link href="/categories/ev-yasam" className="group">
+            <Link href="/categories/ev-yasam" prefetch={true} className="group">
               <div className="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 text-center">
                 <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 <div className="relative z-10">
@@ -380,7 +380,7 @@ export default function Home() {
             </Link>
 
             {/* Spor */}
-            <Link href="/categories/spor" className="group">
+            <Link href="/categories/spor" prefetch={true} className="group">
               <div className="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 text-center">
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 <div className="relative z-10">
@@ -395,7 +395,7 @@ export default function Home() {
             </Link>
 
             {/* Kitap */}
-            <Link href="/categories/kitap" className="group">
+            <Link href="/categories/kitap" prefetch={true} className="group">
               <div className="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 text-center">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 <div className="relative z-10">
@@ -410,7 +410,7 @@ export default function Home() {
             </Link>
 
             {/* Kozmetik */}
-            <Link href="/categories/kozmetik" className="group">
+            <Link href="/categories/kozmetik" prefetch={true} className="group">
               <div className="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 text-center">
                 <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 to-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 <div className="relative z-10">
@@ -426,7 +426,7 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-16">
-            <Link href="/categories">
+            <Link href="/categories" prefetch={true}>
               <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-5 text-xl font-bold rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105">
                 <Grid3X3 className="mr-3 h-6 w-6" />
                 Tüm Kategorileri Gör

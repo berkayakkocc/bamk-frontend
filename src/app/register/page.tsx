@@ -28,9 +28,11 @@ import {
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks';
+import { useAuthStore } from '@/store';
 
 export default function RegisterPage() {
-  const { register } = useAuth();
+  const { register: registerMutation } = useAuth();
+  const { login } = useAuthStore();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -86,12 +88,16 @@ export default function RegisterPage() {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Mock register logic
-      await register({
+      const user = {
         id: Date.now().toString(),
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
-        avatar: null
-      });
+        role: 'customer' as const,
+        avatar: undefined,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      await login(user, 'mock-token');
       
       // Redirect to home page
       window.location.href = '/';

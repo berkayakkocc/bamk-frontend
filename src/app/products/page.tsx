@@ -1,6 +1,6 @@
 'use client';
 
-import { useProducts } from '@/hooks';
+import { useProducts, useCart, useUI } from '@/hooks';
 import { Card, Button } from '@/components/ui';
 import Link from 'next/link';
 import { 
@@ -20,16 +20,31 @@ import {
 import { useState } from 'react';
 
 export default function ProductsPage() {
-  const { products, categories, isLoading, error, setSearchQuery, setSelectedCategory } = useProducts();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [sortBy, setSortBy] = useState('name');
+  const [sortBy, setSortBy] = useState<'name' | 'price' | 'createdAt'>('name');
   const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  
+  // Filtreleri oluştur
+  const filters = {
+    search: searchTerm || undefined,
+    category: selectedCategory || undefined,
+    minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
+    maxPrice: priceRange[1] < 10000 ? priceRange[1] : undefined,
+    sortBy: sortBy !== 'name' ? sortBy : undefined,
+    sortOrder: 'asc' as const
+  };
+  
+  const { products, categories, isLoading, error, setSearchQuery } = useProducts(filters);
+  const { addToCart, isInCart, getItemQuantity } = useCart();
+  const { showToast } = useUI();
+
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    setSearchQuery(searchTerm);
+    // Filtreler otomatik olarak güncellenecek çünkü searchTerm state'i değişiyor
   };
 
   const handleCategoryFilter = (categoryId: string | null) => {
@@ -38,9 +53,21 @@ export default function ProductsPage() {
 
   const clearFilters = () => {
     setSearchTerm('');
-    setSearchQuery('');
     setSelectedCategory(null);
     setPriceRange([0, 10000]);
+    setSortBy('name');
+  };
+
+  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+    e.preventDefault(); // Link'e tıklanmasını engelle
+    e.stopPropagation(); // Event bubbling'i durdur
+    
+    addToCart(product, 1);
+    showToast({
+      type: 'success',
+      title: 'Ürün sepete eklendi!',
+      description: `${product.name} sepete eklendi.`
+    });
   };
 
   if (isLoading) {
@@ -105,7 +132,7 @@ export default function ProductsPage() {
                 placeholder="Ne arıyorsunuz? Ürün, kategori veya marka..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-16 pr-6 py-4 text-lg border-0 rounded-full shadow-lg focus:ring-4 focus:ring-purple-300 focus:outline-none bg-gray-50"
+                className="w-full pl-16 pr-6 py-4 text-lg border-0 rounded-full shadow-lg focus:ring-4 focus:ring-purple-300 focus:outline-none bg-gray-50 placeholder:text-gray-800 placeholder:font-bold text-gray-900 font-semibold"
               />
             </div>
             <Button
@@ -121,7 +148,11 @@ export default function ProductsPage() {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => handleCategoryFilter(null)}
-              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg font-semibold"
+              className={`px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg font-semibold ${
+                selectedCategory === null
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white'
+              }`}
             >
               Tümü
             </button>
@@ -129,7 +160,11 @@ export default function ProductsPage() {
               <button
                 key={category.id}
                 onClick={() => handleCategoryFilter(category.id)}
-                className="px-6 py-3 bg-gray-100 text-gray-700 rounded-full hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg font-medium"
+                className={`px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg font-medium ${
+                  selectedCategory === category.id
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white'
+                }`}
               >
                 {category.name}
               </button>
@@ -186,7 +221,7 @@ export default function ProductsPage() {
               : 'space-y-6'
           }>
             {products.map((product) => (
-              <Link key={product.id} href={`/products/${product.id}`}>
+              <Link key={product.id} href={`/products/${product.id}`} prefetch={true}>
                 <div className="group relative cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                   <div className={`relative bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 ${
@@ -274,9 +309,16 @@ export default function ProductsPage() {
                             ₺{(product.price * 1.2).toLocaleString()}
                           </span>
                         </div>
-                        <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        <Button 
+                          onClick={(e) => handleAddToCart(product, e)}
+                          className={`px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg ${
+                            isInCart(product.id)
+                              ? 'bg-green-500 hover:bg-green-600 text-white'
+                              : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white'
+                          }`}
+                        >
                           <ShoppingBag className="mr-2 h-4 w-4" />
-                          Sepete Ekle
+                          {isInCart(product.id) ? `Sepette (${getItemQuantity(product.id)})` : 'Sepete Ekle'}
                         </Button>
                       </div>
                     </div>

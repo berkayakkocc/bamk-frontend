@@ -29,7 +29,7 @@ export class ProductService {
 
   // Get product detail by ID (with reviews, similar products, etc.)
   static async getProductDetail(id: string): Promise<ApiResponse<ProductDetail>> {
-    return apiClient.get<ProductDetail>(`/products/${id}/detail`);
+    return apiClient.get<ProductDetail>(`/ProductDetail/${id}`);
   }
 
   // Get product reviews

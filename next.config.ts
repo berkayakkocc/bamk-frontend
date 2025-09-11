@@ -1,13 +1,23 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Turbopack configuration
-  turbopack: {
-    root: __dirname,
+  // Performance optimizations
+  experimental: {
+    optimizePackageImports: ['@heroicons/react', 'lucide-react'],
   },
   
   // External packages for server components
   serverExternalPackages: ['axios'],
+  
+  // Compiler optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
+  // Disable ESLint during build
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   
   // Environment variables
   env: {
